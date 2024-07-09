@@ -57,4 +57,5 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: Testers
           file: ${{ steps.releaseApk.outputs.apkfile }}
+          debug: true
 
