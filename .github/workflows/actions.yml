@@ -38,7 +38,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Runs a single command using the runners shell
       - name: Load Private Data
         env:
             RELEASE_KEYSTORE_PASSWORD: ${{ secrets.FIREBASE_API_KEY }}
@@ -51,10 +50,13 @@ jobs:
 
       - name: Get release file apk path
         id: releaseApk
-        run: echo "apkfile=$(find app/build/outputs/apk/debug/*.apk)"
+        run: echo "apkfile=$(find app/build/outputs/apk/debug/*.apk)" >> $GITHUB_OUTPUT
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: upload apk to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: ${{ steps.releaseApk.outputs.apkfile }}
+
