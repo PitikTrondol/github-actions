@@ -51,7 +51,7 @@ jobs:
           echo apkFile --- $apkFile
 
       - name: upload apk to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
