@@ -40,22 +40,22 @@ jobs:
 
       - name: Load Private Data
         env:
-            RELEASE_KEYSTORE_PASSWORD: ${{ secrets.FIREBASE_API_KEY }}
+          RELEASE_KEYSTORE_PASSWORD: ${{secrets.FIREBASE_APP_ID}}
         run: echo Load $RELEASE_KEYSTORE_PASSWORD from Private Stash!
-        
+
       - name: Generate APK Debug
         id: releaseApk
         run: |
           ./gradlew assembleDebug --stacktrace
-          echo "apkfile=$(find app/build/outputs/apk/debug/*.apk)">> $GITHUB_OUTPUT
-          echo Generate those $apkfile MFers!
+          echo "apkFile=$(find app/build/outputs/apk/debug/*.apk)" >> $GITHUB_OUTPUT
+          echo apkFile --- $apkFile
 
       - name: upload apk to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: Testers
-          file: ${{ steps.releaseApk.outputs.apkfile }}
+          serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
+          groups: testers
+          file: ${{ steps.releaseApk.outputs.apkFile }}
           debug: true
 
