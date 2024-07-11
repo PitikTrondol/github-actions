@@ -73,6 +73,7 @@ jobs:
           echo sonarToken="$SONAR_TOKEN" >> config.properties
           ls ${{ github.workspace }}
           
+          
           echo "cat config.properties"
           cat config.properties
 
