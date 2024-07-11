@@ -32,8 +32,8 @@ jobs:
           java-version: 17
           cache: gradle
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2.0.10
+#      - name: Setup Android SDK
+#        uses: android-actions/setup-android@v2.0.10
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -67,10 +67,10 @@ jobs:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
         run: |
           touch config.properties
-          echo sonarProjectKey="SONAR_PROJECT_KEY" >> config.properties
-          echo sonarProjectName="SONAR_PROJECT_NAME" >> config.properties
-          echo sonarHost="SONAR_HOST_URL" >> config.properties
-          echo sonarToken="SONAR_TOKEN" >> config.properties
+          echo sonarProjectKey="$SONAR_PROJECT_KEY" >> config.properties
+          echo sonarProjectName="$SONAR_PROJECT_NAME" >> config.properties
+          echo sonarHost="$SONAR_HOST_URL" >> config.properties
+          echo sonarToken="$SONAR_TOKEN" >> config.properties
           ls ${{ github.workspace }}
           
           echo "cat config.properties"
