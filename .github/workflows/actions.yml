@@ -43,19 +43,43 @@ jobs:
           RELEASE_KEYSTORE_PASSWORD: ${{secrets.FIREBASE_APP_ID}}
         run: echo Load $RELEASE_KEYSTORE_PASSWORD from Private Stash!
 
-      - name: Generate APK Debug
-        id: releaseApk
+#      - name: Generate APK Debug
+#        id: releaseApk
+#        run: |
+#          ./gradlew assembleDebug --stacktrace
+#          echo "apkFile=$(find app/build/outputs/apk/debug/*.apk)" >> $GITHUB_OUTPUT
+#          echo apkFile --- $apkFile
+
+#      - name: upload apk to Firebase App Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1
+#        with:
+#          appId: ${{secrets.FIREBASE_APP_ID}}
+#          serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
+#          groups: "test@test.com, test2@test2.com"
+#          file: ${{ steps.releaseApk.outputs.apkFile }}
+#          debug: true
+
+      - name: Create and populate config.properties file
+        env:
+          SONAR_PROJECT_KEY: ${{ env.SONAR_PROJECT_KEY }}
+          SONAR_PROJECT_NAME: ${{ env.SONAR_PROJECT_NAME }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
         run: |
-          ./gradlew assembleDebug --stacktrace
-          echo "apkFile=$(find app/build/outputs/apk/debug/*.apk)" >> $GITHUB_OUTPUT
-          echo apkFile --- $apkFile
+          touch config.properties
+          echo sonarProjectKey="SONAR_PROJECT_KEY" >> config.properties
+          echo sonarProjectName="SONAR_PROJECT_NAME" >> config.properties
+          echo sonarHost="SONAR_HOST_URL" >> config.properties
+          echo sonarToken="SONAR_TOKEN" >> config.properties
+          ls ${{ github.workspace }}
+          
+          echo "cat config.properties"
+          cat config.properties
 
-      - name: upload apk to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
-          groups: "test@test.com, test2@test2.com"
-          file: ${{ steps.releaseApk.outputs.apkFile }}
-          debug: true
+          echo "ls -a ."
+          ls -a .
 
+          echo "ls -a ${{ github.workspace }}"
+          ls -a ${{ github.workspace }}
+
+        shell: bash
