@@ -65,12 +65,13 @@ jobs:
           SONAR_PROJECT_NAME: ${{ env.SONAR_PROJECT_NAME }}
           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          RELEASE_KEYSTORE_PASSWORD: ${{secrets.FIREBASE_APP_ID}}
         run: |
           touch config.properties
           echo sonarProjectKey="$SONAR_PROJECT_KEY" >> config.properties
           echo sonarProjectName="$SONAR_PROJECT_NAME" >> config.properties
           echo sonarHost="$SONAR_HOST_URL" >> config.properties
-          echo sonarToken="$SONAR_TOKEN" >> config.properties
+          echo sonarToken="$RELEASE_KEYSTORE_PASSWORD" >> config.properties
           ls ${{ github.workspace }}
           
           
