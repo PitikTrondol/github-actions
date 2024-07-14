@@ -32,8 +32,8 @@ jobs:
           java-version: 17
           cache: gradle
 
-#      - name: Setup Android SDK
-#        uses: android-actions/setup-android@v2.0.10
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2.0.10
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -43,12 +43,12 @@ jobs:
           RELEASE_KEYSTORE_PASSWORD: ${{secrets.FIREBASE_APP_ID}}
         run: echo Load $RELEASE_KEYSTORE_PASSWORD from Private Stash!
 
-#      - name: Generate APK Debug
-#        id: releaseApk
-#        run: |
-#          ./gradlew assembleDebug --stacktrace
-#          echo "apkFile=$(find app/build/outputs/apk/debug/*.apk)" >> $GITHUB_OUTPUT
-#          echo apkFile --- $apkFile
+      - name: Generate APK Debug
+        id: releaseApk
+        run: |
+           ./gradlew assembleDebug --stacktrace
+           echo "apkFile=$(find app/build/outputs/apk/debug/*.apk)" >> $GITHUB_OUTPUT
+           echo apkFile --- $apkFile
 
 #      - name: upload apk to Firebase App Distribution
 #        uses: wzieba/Firebase-Distribution-Github-Action@v1
